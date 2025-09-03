@@ -1,0 +1,171 @@
+body, html{
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+
+header{
+	background-color: rgba( 33, 110, 163, 1 );
+	display: flex;
+	align-items: center;
+	padding: 10px;
+}
+
+#logo {
+	height: 40px;
+	margin-right: 20px;
+	display: flex;
+	align-items: center;	
+}
+
+header h1{
+	color: white;
+	text-align: center;
+	flex-grow: 1;
+	font-size: 20px;
+	font-weight: bold;
+	font-family: Arial;
+}
+
+#map{
+	/*border-style: solid;*/
+	height: calc(100% - 100px);
+	width: 100%;	
+}
+
+#controls {
+    margin: 20px;
+}
+
+@media(max-width:768px){
+	header{
+		flex-direction:column;
+		text-align:center;
+	}
+	
+	#logo{
+	margin-right: 0;
+	margin-bottom: 10px;	
+	}
+}
+
+
+
+
+
+
+
+.leaflet-popup-content {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+
+
+
+
+#panel-capas-rest {
+  position: absolute;
+  right: 10px;
+  width: 260px;
+  max-height: 400px;
+  background-color: rgba(33, 110, 163, 0.7);
+  border: 1px solid #ccc;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  border-radius: 4px;
+  font-family: sans-serif;
+  color: white;
+  
+}
+
+#panel-capas-rest-header {
+  background-color: #f5f5f5;
+  padding: 6px 10px;
+  cursor: move;
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+  color: black;
+  cursor: pointer;
+  user-select: none;
+}
+
+#panel-capas-rest-content {
+  overflow-y: auto;
+  max-height: 340px;
+  padding: 10px;
+}
+
+
+
+
+#panel-mapas-base {
+  position: absolute;
+  top: 120px; /* Ajusta según necesidad */
+  right: 10px;
+  width: 260px;
+  max-height: 400px;
+  background-color: rgba(33, 110, 163, 0.7);
+  border: 1px solid #ccc;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  border-radius: 4px;
+  font-family: sans-serif;
+  color: white;
+  
+}
+
+#panel-mapas-base-header {
+  background-color: #f5f5f5;
+  padding: 6px 10px;
+  cursor: move;
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+  color: black;
+  cursor: pointer;
+  user-select: none;
+}
+
+#panel-mapas-base-content {
+  overflow-y: auto;
+  max-height: 100px;
+  padding: 10px;
+}
+
+
+
+#panel-proyectos {
+  position: absolute;
+  top: 120px; /* Ajusta según necesidad */
+  right: 10px;
+  width: 260px;
+  max-height: 100px;
+  background-color: rgba(33, 110, 163, 0.7);
+  border: 1px solid #ccc;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  border-radius: 4px;
+  font-family: sans-serif;
+  color: white;
+  
+}
+
+#panel-proyectos-header {
+  background-color: #f5f5f5;
+  padding: 6px 10px;
+  cursor: move;
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+  color: black;
+  cursor: pointer;
+  user-select: none;
+}
+
+#panel-proyectos-content {
+  overflow-y: auto;
+  max-height: 100px;
+  padding: 10px;
+}
