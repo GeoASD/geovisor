@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+
+	<head>
+		<title>GEO ASD</title>
+	
+		<meta charset="utf-8">
+		<link rel="icon" href="images/ASD.ico">
+		
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		
+		<script src="plugins/leaflet.js"></script>
+		<script src="plugins/Leaflet.Coordinates-0.1.5.min.js"></script>
+		<script src="plugins/Control.Geocoder.js"></script>
+		<script src="plugins/leaflet-search.min.js"></script>
+		<script src="plugins/leaflet.legend.js"></script>
+		<script src="plugins/leaflet.ajax.min.js"></script>
+		<script src="plugins/leaflet-sidebar.min.js"></script>
+		<script src="plugins/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
+		<script src="https://unpkg.com/esri-leaflet@3.0.16/dist/esri-leaflet.js"></script>
+		<script src="js/shp.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+		<script src="https://unpkg.com/jszip/dist/jszip.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/togeojson/0.16.0/togeojson.min.js"></script>
+		<script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.8.0/proj4.js"></script>
+		<script src="https://api.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.4/leaflet-omnivore.min.js"></script>
+		
+		
+		<link rel="stylesheet" type="text/css" href="plugins/leaflet.css">
+		<link rel="stylesheet" type="text/css" href="plugins/Leaflet.Coordinates-0.1.5.css">
+		<link rel="stylesheet" type="text/css" href="plugins/Control.Geocoder.css">
+		<link rel="stylesheet" type="text/css" href="plugins/leaflet-search.min.css">
+		<link rel="stylesheet" type="text/css" href="plugins/leaflet.legend.css">
+		<link rel="stylesheet" type="text/css" href="plugins/all.min.css">
+		<link rel="stylesheet" type="text/css" href="plugins/leaflet-sidebar.min.css"/>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+		<link rel="stylesheet" type="text/css" href="plugins/bootstrap.min.css">
+		
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+	</head>
+	
+	<body>
+		<header>
+			<img src="images/blanco.png" alt="Logo ASD" id="logo">
+			
+			<h1>GEO ASD - Visor de Proyectos</h1>
+		</header>
+		
+		
+
+		<div id="map"></div>
+		
+		
+		
+		
+		<!-- Inicio del Sidebar -->
+
+		<div id="sidebar" class="leaflet-sidebar collapsed">
+
+			<div class="leaflet-sidebar-tabs">
+				<ul role="tablist">
+					<!-- Pestañas del sidebar -->
+					<li><a href="#home" role="tab"><i class="fa-solid fa-house-user"></i></a></li>
+					<li><a href="#loadshp" role="tab"><i class="fa-solid fa-upload"></i></a></li>
+					<li><a href="#dashboard" role="tab"><i class="fa-solid fa-chart-column"></i></a></li>
+					<li><a href="#analisis" role="tab"><i class="fa-solid fa-chart-area"></i></a></li>
+				</ul>
+			</div>
+
+
+			<div class="leaflet-sidebar-content">
+				<!-- Contenido de la Pestaña Inicio -->
+				<div class="leaflet-sidebar-pane" id="home">
+					<h1 class="leaflet-sidebar-header">	Bienvenido</h1>
+					<p></p>
+					<p>En ASD Consultants nos especializamos en proveer servicios de consultoría
+					ambiental, social y seguridad industrial en los sectores
+					de minería, energía (hidrocarburos y electricidad),
+					industria, salud y saneamiento.</p>
+				</div>
+
+				<!-- Contenido del Área de estudio -->
+				<div class="leaflet-sidebar-pane" id="loadshp">
+					<h1 class="leaflet-sidebar-header">Sube tu área de estudio</h1>
+					<p></p>
+					<p><b>Requerimientos:</b>
+					<br>- Para visualizar un archivo shapefile debe estar comprimido en formato .ZIP conteniendo los archivos: .shp, .shx, .dbf y .prj</br>
+					<br>- Para visualizar un archivo .xlsx con coordenadas en grados, minutos y segundos o grados decimales debe contener las columnas "lat" (Latitud) y "long" (Longitud).</br>
+					<br>- Para visualizar un archivo .xlsx con coordenadas UTM debe contener las columnas "este", "norte" y "zona" (17, 18 o 19).</br>
+					<br>- Para visualizar un archivo .kml o .kmz solo debe seleccionarlo.</br>
+					</p>
+						<div id="controls">
+							<input type="file"  id="shapefile-input" accept=".zip, .kml, .kmz, .csv, .xlsx, .xls">
+							<br><br><button class ="btn btn-success btn-sm"  id="show-button">Mostrar</button>
+							<button class ="btn btn-danger btn-sm" id="clear-button">Borrar</button>
+						</div>	
+				</div>
+				
+				
+					<!-- Contenido de la Pestaña Dashboard -->
+				<div class="leaflet-sidebar-pane" id="dashboard">
+					<h1 class="leaflet-sidebar-header">	Proyectos realizados</h1>
+					
+					<!-- Gráfico de barras por Región -->
+					<h6 style="margin-top: 20px;"><b>Proyectos por Regíon</b></h6>
+					<canvas id="dashboardBarChart" height="200"></canvas>
+
+					<!-- Gráfico de donuts por Actividad -->
+					<h6 style="margin-top: 20px;"><b>Proyectos por Actividad</b></h6>
+					<canvas id="dashboardDoughnutChart" height="200"></canvas>
+				</div>
+				
+				
+				
+				
+				
+				<!-- Contenido de la Pestaña Análisis Espacial -->
+				<div class="leaflet-sidebar-pane" id="analisis">
+				  <h1 class="leaflet-sidebar-header">Análisis Espacial</h1>
+				  <p></p>
+				  <p>Selecciona un área de estudio</p>
+				  
+				  <input type="file" id="analysis-file-input" accept=".kmz,.kml,.xlsx,.xls,.zip,.shp,.dbf,.prj" multiple>
+				  <br><br>
+				  <button id="btn-run-analysis" class="btn btn-primary btn-sm" disabled>Ejecutar Análisis</button>
+				  
+				  <div id="analysis-results" style="margin-top: 20px; max-height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;"></div>
+				</div>
+
+				
+				
+	
+			</div>
+			
+		</div>
+
+		<!-- Fín del Sidebar -->
+		
+		
+		
+		
+		
+		
+		
+		<!-- Panel para mapas base -->
+		<div id="panel-mapas-base" class="draggable-panel" style="top: 10px; right: 10px;">
+		  <div id="panel-mapas-base-header">Mapas Base<span style="margin-left: 153px;">▼</span></div>
+		  <div id="panel-mapas-base-content"></div>
+		</div>
+		
+		
+		<!-- Panel para capa Proyectos -->
+		<div id="panel-proyectos" class="draggable-panel" style="top: 150px; right: 10px;">
+		  <div id="panel-proyectos-header">Proyectos<span style="margin-left: 164px;">▼</span></div>
+		  <div id="panel-proyectos-content"></div>
+		</div>
+		
+		
+		<!-- Panel para capas nacionales -->
+		<div id="panel-capas-rest" class="draggable-panel" style="top: 260px; right: 10px;">
+		  <div id="panel-capas-rest-header">Capas Nacionales<span style="margin-left: 120px;">▼</span></div>
+		  <div id="panel-capas-rest-content"></div>
+		</div>
+		
+		
+		
+		
+		
+		
+		
+		
+	
+		<script src="geojson/proyectos_total.js"></script>
+		<script src="js/simbologia.js"></script>
+		<script src="js/popup.js"></script>
+		<script src="js/tooltip.js"></script>
+		
+		<script src="js/load_shapefile.js"></script>
+		
+		
+		
+		<script src="js/maps.js"></script>
+		
+	</body>
+	
+</html>
+
+
